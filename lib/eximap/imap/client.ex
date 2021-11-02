@@ -14,7 +14,7 @@ defmodule Eximap.Imap.Client do
   @total_timeout 30_000
 
   def start_link(conn_opts, opts \\ []) do
-    GenServer.start_link(__MODULE__, conn_opts, name: Keyword.get(opts, :name))
+    GenServer.start_link(__MODULE__, conn_opts)
   end
 
   def init(%{host: host, port: _, account: _} = conn_opts) do
@@ -28,7 +28,7 @@ defmodule Eximap.Imap.Client do
   end
 
   def connect(pid) do
-    GenServer.call(pid, :connect)
+    GenServer.call(pid, :connect, 20000)
   end
 
   def execute(pid, req) do
